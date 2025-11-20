@@ -1,6 +1,6 @@
 {
   "name": "eofol-simple-html",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Eofol library for rendering html tags as html string",
   "homepage": "https://github.com/wurducius/eofol-simple-html#readme",
   "bugs": {
