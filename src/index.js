@@ -1,3 +1,3 @@
-const Simple = require("./simple")
+const Simple = require("./simple");
 
-module.exports = Simple
+module.exports = Simple;

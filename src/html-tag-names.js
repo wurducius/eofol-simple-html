@@ -138,8 +138,19 @@ const htmlTagNames = [
   "video",
   "wbr",
   "xmp",
-]
+];
 
-const htmlSpecialTagNames = ["html", "head", "body", "script", "noscript", "meta", "link", "title", "style", "template"]
+const htmlSpecialTagNames = [
+  "html",
+  "head",
+  "body",
+  "script",
+  "noscript",
+  "meta",
+  "link",
+  "title",
+  "style",
+  "template",
+];
 
-module.exports = { htmlTagNames, htmlSpecialTagNames }
+module.exports = { htmlTagNames, htmlSpecialTagNames };

@@ -5,18 +5,18 @@ const renderClass = (className) =>
   Array.isArray(className) ? cx(...className) : className;
 
 const renderAttributes = (attributes) =>
-  attributes !== undefined
-    ? ` ${Object.keys(attributes)
+  attributes === undefined
+    ? ""
+    : ` ${Object.keys(attributes)
         .map(
           (attributeName) =>
             `${attributeName}="${
               attributeName === "class"
                 ? renderClass(attributes[attributeName])
                 : attributes[attributeName]
-            }"`
+            }"`,
         )
-        .join(" ")}`
-    : "";
+        .join(" ")}`;
 
 const renderChildren = (children) => {
   if (!children) {
@@ -28,25 +28,28 @@ const renderChildren = (children) => {
   }
 };
 
-const tag = (tagName, attributes, children) =>
+const tag = (tagName) => (attributes, children) =>
   `<${tagName}${renderAttributes(attributes)}>${renderChildren(
-    children
+    children,
   )}</${tagName}>`;
 
-const t = (tagName) => (attributes, children) =>
-  tag(tagName, attributes, children);
+const generateRenderFunctions = (tagNames, namingFunction) =>
+  tagNames.reduce(
+    (acc, next) => ({
+      ...acc,
+      [namingFunction === undefined ? next : namingFunction(next)]: tag(next),
+    }),
+    {},
+  );
 
-const Tag = htmlTagNames.reduce(
-  (acc, next) => ({ ...acc, [next]: t(next) }),
-  {}
-);
+const simpleHtmlBuiltin = (tagName, is) => (attributes, children) =>
+  tag(tagName)({ is, ...attributes }, children);
 
-const TagSpecial = htmlSpecialTagNames.reduce(
-  (acc, next) => ({ ...acc, [`${next}Tag`]: t(next) }),
-  {}
-);
-
-module.exports = {
-  ...Tag,
-  ...TagSpecial,
+const Tag = {
+  ...generateRenderFunctions(htmlTagNames),
+  ...generateRenderFunctions(htmlSpecialTagNames, (tagName) => `${tagName}Tag`),
+  simpleHtml: tag,
+  simpleHtmlBuiltin,
 };
+
+module.exports = Tag;
